@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register | Hacktiv8 Bank</title>
+</head>
+<body>
+  <h1>Registration</h1>
+  <div>
+    <form action="/customers/register" method="POST">
+      <div>
+        <label for="identityNumber">ID Number: </label><br>
+        <input type="text" name="identityNumber" id="identityNumber" placeholder="Input your ID number">
+      </div>
+      <br>
+      <div>
+        <label for="fullName">Full Name: </label><br>
+        <input type="text" name="fullName" id="fullName" placeholder="Input your full name">
+      </div>
+      <br>
+      <div>
+        <label for="address">Address: </label><br>
+        <input type="text" name="address" id="address" placeholder="Input your address">
+      </div>
+      <br>
+      <div>
+        <label for="birthDate">Birth Date: </label><br>
+        <input type="date" name="birthDate" id="birthDate" placeholder="Input your birth date" value="2000-01-01">
+      </div>
+      <br>
+      <div>
+        <label for="gender">Gender: </label> <br>
+        <input type="radio" id="male" name="gender" value="male">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label><br>
+      </div>
+      <br>
+      <input type="submit" value="REGISTER">
+    </form>
+  </div>
+</body>
+</html>

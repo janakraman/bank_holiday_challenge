@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accounts | Hacktiv8 Bank</title>
+</head>
+<body>
+  <a href="/customers">BACK</a>
+  <h1>Good day, <%= customerData.fullName%></h1>
+  <table border="1">
+    <thead>
+      <tr>
+        <th>Account Number</th>
+        <th>Type</th>
+        <th>Balance</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if(customerData.Accounts.length > 0) { %>
+        <% customerData.Accounts.forEach(e => { %>
+          <tr>
+            <td><%= e.accountNumber %></td>
+            <td><%= e.type %></td>
+            <td><%= e.formattedBalance() %></td>
+            <td><a href="/customers/<%= customerData.id %>/accounts/<%= e.id %>/transfer">Transfer</a></td>
+          </tr>
+        <% }) %>
+      <% } else { %>
+        <tr>
+          <td colspan="4" style="text-align: center;">No data</td>
+        </tr>
+      <% } %>
+    </tbody>
+  </table>
+  <h3>
+    ADD ACCOUNT
+  </h3>
+  <form action="/customers/<%= customerData.id %>/accounts" method="POST">
+    <div>
+      <label for="type">Account Type: </label><br>
+      <select id="type" name="type">
+        <option value="On Account">On Account</option>
+        <option value="Xtra Payroll">Xtra Payroll</option>
+        <option value="Tabunganku">Tabunganku</option>
+      </select>
+    </div>
+    <br>
+    <div>
+      <label for="balance">Balance: </label><br>
+      <input type="text" name="balance" id="balance" placeholder="0">
+    </div>
+    <br>
+    <input type="submit" value="SAVE">
+  </form>
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transfer | Hacktiv8 Bank</title>
+</head>
+<body>
+  <div>
+    <p>Transfer From: <strong> <%= accountData.accountNumber %> <%= accountData.type %> <%= accountData.formattedBalance() %> </strong></p>
+  </div>
+  <div>
+    <form action="/customers/<%= accountData.CustomerId %>/accounts/<%= accountData.id%>/transfer" method="POST">
+      <div>
+        <label for="amount">Amount: </label><br>
+        <input type="text" name="amount" id="amount" placeholder="0">
+      </div>
+      <br>
+      <div>
+        <label for="transferToAccountId">Transfer To: </label> <br>
+        <select id="transferToAccountId" name="transferToAccountId">
+          <% accounts.forEach(e => { %>
+            <option value="<%= e.id %>"><%= e.accountNumber %> - <%= e.Customer.fullName %></option>
+          <% }) %>
+        </select>
+      </div>
+      <br>
+      <input type="submit" value="TRANSFER">
+    
+    </form>
+  </div>
+  
+</body>
+</html>
