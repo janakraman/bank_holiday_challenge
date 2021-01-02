@@ -9,6 +9,15 @@
   <div>
     <p>Transfer From: <strong> <%= accountData.accountNumber %> <%= accountData.type %> <%= accountData.formattedBalance() %> </strong></p>
   </div>
+
+  <div>
+    <% if (errors){ %> 
+      <% errors.forEach(e => { %>
+        <p style="color: red"><%= e %></p>
+      <% }) %> 
+    <% } %>
+  </div>
+  
   <div>
     <form action="/customers/<%= accountData.CustomerId %>/accounts/<%= accountData.id%>/transfer" method="POST">
       <div>

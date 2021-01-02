@@ -1,5 +1,5 @@
 const { Customer, Account } = require("../models");
-const { Op } = require("sequelize");
+const { Op, ValidationErrorItem } = require("sequelize");
 const dateFormat = require("../helpers/dateFormat");
 class CustomerController {
   static customerList(req, res) {
@@ -16,7 +16,9 @@ class CustomerController {
   }
 
   static addCustomerGet(req, res) {
-    res.render("register");
+    let errors;
+    if (req.query.errors) errors = req.query.errors.split(",");
+    res.render("register", { errors });
   }
 
   static addCustomerPost(req, res) {
@@ -26,15 +28,19 @@ class CustomerController {
         res.redirect("/customers");
       })
       .catch((err) => {
-        res.send(err.message);
+        const errors = err.errors.map((e) => e.message);
+        res.redirect(`/customers/register?errors=${errors}`);
       });
   }
 
   static editCustomerGet(req, res) {
     const id = +req.params.idCustomer;
+    let errors;
+    if (req.query.errors) errors = req.query.errors.split(",");
+
     Customer.findByPk(id)
       .then((customerData) => {
-        res.render("editProfile", { customerData, dateFormat });
+        res.render("editProfile", { customerData, dateFormat, errors });
       })
       .catch((err) => {
         res.send(err.message);
@@ -53,17 +59,21 @@ class CustomerController {
         res.redirect("/customers");
       })
       .catch((err) => {
-        res.send(err.message);
+        const errors = err.errors.map((e) => e.message);
+        res.redirect(`/customers/${id}/editProfile?errors=${errors}`);
       });
   }
 
   static customerAccountsGet(req, res) {
     const id = +req.params.idCustomer;
+    let errors;
+    if (req.query.errors) errors = req.query.errors.split(",");
+
     Customer.findByPk(id, {
       include: Account,
     })
       .then((customerData) => {
-        res.render("customerAccounts", { customerData });
+        res.render("customerAccounts", { customerData, errors });
       })
       .catch((err) => {
         res.send(err.message);
@@ -81,12 +91,16 @@ class CustomerController {
         res.redirect(`/customers/${CustomerId}/accounts`);
       })
       .catch((err) => {
-        res.send(err.message);
+        const errors = err.errors.map((e) => e.message);
+        res.redirect(`/customers/${CustomerId}/accounts?errors=${errors}`);
       });
   }
 
   static transferAccountsGet(req, res) {
     const AccountId = +req.params.idAccount;
+    let errors;
+    if (req.query.errors) errors = req.query.errors.split(",");
+
     let accounts = [];
     Account.findAll({
       where: {
@@ -101,7 +115,7 @@ class CustomerController {
         return Account.findByPk(AccountId);
       })
       .then((accountData) => {
-        res.render("transfer", { accountData, accounts });
+        res.render("transfer", { accountData, accounts, errors });
       })
       .catch((err) => {
         res.send(err.message);
@@ -119,7 +133,7 @@ class CustomerController {
       console.log(amount, "===== ini amount nya");
       console.log(senderAccount.verifyBalance(amount), "===== ini fungsinya");
       if (!senderAccount.verifyBalance(amount)) {
-        res.send("Insufficient balance");
+        res.redirect(`/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=Insufficient Balance`);
       } else {
         return Account.decrement("balance", {
           by: amount,
@@ -142,7 +156,8 @@ class CustomerController {
             res.redirect(`/customers/${CustomerId}/accounts`);
           })
           .catch((err) => {
-            res.send(err.message);
+            const errors = err.errors.map((e) => e.message);
+            res.redirect(`/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=${errors}`);
           });
       }
     });

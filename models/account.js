@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: {
             args: 500000,
-            msg: "Minimum balance for new Account: Rp500.000",
+            msg: "Minimum balance for new Account: Rp 500.000",
           },
         },
       },

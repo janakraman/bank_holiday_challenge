@@ -1,52 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Edit Profile | Hacktiv8 Bank</title>
-</head>
-<body>
-  <h1>Edit Profile</h1>
-  <div>
-    <form action="/customers/<%= customerData.id %>/editProfile" method="POST">
-      <div>
-        <label for="identityNumber">ID Number: </label><br>
-        <input type="text" name="identityNumber" id="identityNumber" value="<%= customerData.identityNumber %>">
-      </div>
-      <br>
-      <div>
-        <label for="fullName">Full Name: </label><br>
-        <input type="text" name="fullName" id="fullName" value="<%= customerData.fullName %>">
-      </div>
-      <br>
-      <div>
-        <label for="address">Address: </label><br>
-        <input type="text" name="address" id="address" value="<%= customerData.address %>">
-      </div>
-      <br>
-      <div>
-        <label for="birthDate">Birth Date: </label><br>
-        <input type="date" name="birthDate" id="birthDate" value="<%= dateFormat(customerData.birthDate) %>">
-      </div>
-      <br>
-      <div>
-        <label for="gender">Gender: </label> <br>
-        <% if(customerData.gender === "male"){ %>
-          <input type="radio" id="male" name="gender" value="male" checked>
-        <% } else { %>
-          <input type="radio" id="male" name="gender" value="male">
-        <% } %>
-        <label for="male">Male</label><br>
-        <% if(customerData.gender === "female"){ %>
-        <input type="radio" id="female" name="gender" value="female" checked>
-        <% } else { %>
-          <input type="radio" id="female" name="gender" value="female">
-        <% } %>
-        <label for="female">Female</label><br>
-      </div>
-      <br>
-      <input type="submit" value="REGISTER">
-    </form>
-  </div>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile | Hacktiv8 Bank</title>
+  </head>
+  <body>
+    <h1>Edit Profile</h1>
+
+    <div>
+      <% if (errors){ %> 
+        <% errors.forEach(e => { %>
+          <p style="color: red"><%= e %></p>
+        <% }) %> 
+      <% } %>
+    </div>
+
+    <div>
+      <form
+        action="/customers/<%= customerData.id %>/editProfile"
+        method="POST"
+      >
+        <div>
+          <label for="identityNumber">ID Number: </label><br />
+          <input
+            type="text"
+            name="identityNumber"
+            id="identityNumber"
+            value="<%= customerData.identityNumber %>"
+          />
+        </div>
+        <br />
+        <div>
+          <label for="fullName">Full Name: </label><br />
+          <input
+            type="text"
+            name="fullName"
+            id="fullName"
+            value="<%= customerData.fullName %>"
+          />
+        </div>
+        <br />
+        <div>
+          <label for="address">Address: </label><br />
+          <input
+            type="text"
+            name="address"
+            id="address"
+            value="<%= customerData.address %>"
+          />
+        </div>
+        <br />
+        <div>
+          <label for="birthDate">Birth Date: </label><br />
+          <input
+            type="date"
+            name="birthDate"
+            id="birthDate"
+            value="<%= dateFormat(customerData.birthDate) %>"
+          />
+        </div>
+        <br />
+        <div>
+          <label for="gender">Gender: </label> <br />
+          <% if(customerData.gender === "male"){ %>
+          <input type="radio" id="male" name="gender" value="male" checked />
+          <% } else { %>
+          <input type="radio" id="male" name="gender" value="male" />
+          <% } %>
+          <label for="male">Male</label><br />
+          <% if(customerData.gender === "female"){ %>
+          <input
+            type="radio"
+            id="female"
+            name="gender"
+            value="female"
+            checked
+          />
+          <% } else { %>
+          <input type="radio" id="female" name="gender" value="female" />
+          <% } %>
+          <label for="female">Female</label><br />
+        </div>
+        <br />
+        <input type="submit" value="REGISTER" />
+      </form>
+    </div>
+  </body>
 </html>

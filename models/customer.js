@@ -25,20 +25,21 @@ module.exports = (sequelize, DataTypes) => {
             msg:
               "Identity Number minimum 16 characters and maximum 20 characters",
           },
-          // isUnique(value) {
-          //   Customer.findOne({
-          //     where: {
-          //       identityNumber: value,
-          //     },
-          //   })
-          //     .then((result) => {
-          //       console.log(result, "========== this is result");
-          //       if (result) throw new Error("Duplicate Identity Number");
-          //     })
-          //     .catch((err) => {
-          //       throw new Error(err);
-          //     });
-          // },
+          isUnique(value, next) {
+            Customer.findOne({
+              where: {
+                identityNumber: value,
+              },
+            })
+              .then((result) => {
+                // console.log(result, "========== this is result");
+                if (result && this.id !== result.id) return next ("Duplicate Identity Number");
+                return next();
+              })
+              .catch((err) => {
+                return next(err);
+              });
+          },
         },
       },
       fullName: {

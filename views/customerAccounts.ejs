@@ -8,6 +8,15 @@
 <body>
   <a href="/customers">BACK</a>
   <h1>Good day, <%= customerData.fullName%></h1>
+
+  <div>
+    <% if (errors){ %> 
+      <% errors.forEach(e => { %>
+        <p style="color: red"><%= e %></p>
+      <% }) %> 
+    <% } %>
+  </div>
+  
   <table border="1">
     <thead>
       <tr>
