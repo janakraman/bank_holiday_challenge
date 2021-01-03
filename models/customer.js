@@ -1,5 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
+const { Op } = require("sequelize");
+
 module.exports = (sequelize, DataTypes) => {
   class Customer extends Model {
     /**
@@ -26,14 +28,28 @@ module.exports = (sequelize, DataTypes) => {
               "Identity Number minimum 16 characters and maximum 20 characters",
           },
           isUnique(value, next) {
+            const current = this;
             Customer.findOne({
               where: {
                 identityNumber: value,
+                // id: {
+                //   [Op.ne] : current.id
+                // },
+                fullName: {
+                  [Op.ne] : current.fullName
+                },
+                address: {
+                  [Op.ne] : current.address
+                },
+                
               },
             })
               .then((result) => {
-                // console.log(result, "========== this is result");
-                if (result && this.id !== result.id) return next ("Duplicate Identity Number");
+                console.log(current, "========== this is current id")
+                // console.log(result.id, "========== this is result id")
+
+                console.log(result, "========== this is result");
+                if (result) return next ("Duplicate Identity Number");
                 return next();
               })
               .catch((err) => {

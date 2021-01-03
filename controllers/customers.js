@@ -1,11 +1,13 @@
 const { Customer, Account } = require("../models");
-const { Op, ValidationErrorItem } = require("sequelize");
+const { Op } = require("sequelize");
 const dateFormat = require("../helpers/dateFormat");
+const verifyBalance = require("../helpers/verifyBalance");
+
 class CustomerController {
   static customerList(req, res) {
     Customer.findAll({
       include: Account,
-      order: [["fullName", "DESC"]],
+      order: [["fullName", "ASC"]],
     })
       .then((customerList) => {
         res.render("customerList", { customerList });
@@ -109,6 +111,7 @@ class CustomerController {
         },
       },
       include: Customer,
+      order: [["CustomerId", "ASC"]],
     })
       .then((result) => {
         accounts = result;
@@ -129,11 +132,10 @@ class CustomerController {
     const AccountId = +req.params.idAccount;
 
     Account.findByPk(AccountId).then((senderAccount) => {
-      console.log(senderAccount.balance, "===== ini balance sender");
-      console.log(amount, "===== ini amount nya");
-      console.log(senderAccount.verifyBalance(amount), "===== ini fungsinya");
-      if (!senderAccount.verifyBalance(amount)) {
-        res.redirect(`/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=Insufficient Balance`);
+      if (!verifyBalance(amount, senderAccount.balance)) {
+        res.redirect(
+          `/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=Insufficient Balance`
+        );
       } else {
         return Account.decrement("balance", {
           by: amount,
@@ -157,7 +159,9 @@ class CustomerController {
           })
           .catch((err) => {
             const errors = err.errors.map((e) => e.message);
-            res.redirect(`/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=${errors}`);
+            res.redirect(
+              `/customers/${CustomerId}/accounts/${AccountId}/transfer?errors=${errors}`
+            );
           });
       }
     });
