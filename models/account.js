@@ -12,11 +12,6 @@ module.exports = (sequelize, DataTypes) => {
       Account.belongsTo(models.Customer);
     }
 
-    // verifyBalance(amount) {
-    //   if (this.balance < amount) return false;
-    //   else return true;
-    // }
-
     formattedBalance() {
       return this.balance.toLocaleString("en-ID", {
         style: "currency",
