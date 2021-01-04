@@ -45,9 +45,6 @@ module.exports = (sequelize, DataTypes) => {
               },
             })
               .then((result) => {
-                // console.log(current, "========== this is current id")
-                // console.log(result.id, "========== this is result id")
-                // console.log(result, "========== this is result");
                 if (result) return next ("Duplicate Identity Number");
                 return next();
               })

@@ -2,7 +2,7 @@ const router = require("express").Router();
 const customerRouter = require("./customers");
 
 router.get("/", (req, res) => {
-  res.send("Home!");
+  res.render("home");
 });
 
 router.use("/customers", customerRouter);

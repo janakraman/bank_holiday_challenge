@@ -52,6 +52,8 @@ class CustomerController {
   static editCustomerPost(req, res) {
     const id = +req.params.idCustomer;
     const updatedData = req.body;
+    updatedData.id = id;
+    
     Customer.update(updatedData, {
       where: {
         id,
